@@ -1,0 +1,493 @@
+merchants:
+  # ─── ARCHETYPE 1: hub.wine Extranet ─────────────────────────────────────
+  - id: "bibo-wine"
+    name: "BiBo Wine"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.bibo-wine.co.uk/"
+    downloads:
+      - url: "https://extranet.hub.wine/xlsx/bibo"
+        format: "xlsx"
+        preferred: true
+        label: "hub.wine Excel export"
+    url_pattern: "hub_wine"
+    hub_wine_slug: "bibo"
+    notes: "hub.wine extranet pattern"
+
+  - id: "sterling-fine-wines"
+    name: "Sterling Fine Wines"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://sterlingfw.hub.wine/"
+    downloads:
+      - url: "https://extranet.hub.wine/xlsx/sterlingfw"
+        format: "xlsx"
+        preferred: true
+        label: "hub.wine Excel export"
+    url_pattern: "hub_wine"
+    hub_wine_slug: "sterlingfw"
+
+  - id: "decorum-vintners"
+    name: "Decorum Vintners"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.decorumvintners.co.uk/"
+    downloads:
+      - url: "https://extranet.hub.wine/xlsx/decorum"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "hub_wine"
+    hub_wine_slug: "decorum"
+
+  - id: "falcon-vintners"
+    name: "Falcon Vintners"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.falconvintners.com/"
+    downloads:
+      - url: "https://extranet.hub.wine/xlsx/falconvintners"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "hub_wine"
+    hub_wine_slug: "falconvintners"
+
+  - id: "grand-vin-wm"
+    name: "Grand Vin WM"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.grandvinwinemerchants.com/"
+    downloads:
+      - url: "https://extranet.hub.wine/xlsx/grandvinwinemerchants"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "hub_wine"
+    hub_wine_slug: "grandvinwinemerchants"
+
+  # ─── ARCHETYPE 2: Static File Paths ──────────────────────────────────────
+  - id: "farr-vintners"
+    name: "Farr Vintners"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.farrvintners.com/downloads/"
+    downloads:
+      - url: "https://www.farrvintners.com/winelist_csv.php?output=csv"
+        format: "csv"
+        preferred: true
+        label: "CSV full list"
+      - url: "https://www.farrvintners.com/winelist_xlsx.php"
+        format: "xlsx"
+        preferred: false
+        label: "Excel full list"
+    url_pattern: "dynamic_php"
+    notes: "Gold standard - multiple formats"
+
+  - id: "richard-kihl"
+    name: "Richard Kihl Ltd"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.richardkihl.ltd.uk/"
+    downloads:
+      - url: "https://www.richardkihl.ltd.uk/winelist/winelist.xls"
+        format: "xls"
+        preferred: true
+    url_pattern: "static"
+
+  - id: "bibendum-wine"
+    name: "Bibendum Wine"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.bibendum-wine.co.uk/"
+    downloads:
+      - url: "https://bibendum-wine.co.uk/media/yfkchr4d/01022026-fine-wine-list.xlsx"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "static"
+    notes: "URL may change on each upload - check periodically"
+
+  - id: "cuchet-co"
+    name: "Cuchet & Co"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.cuchet.co.uk/"
+    downloads:
+      - url: "https://cuchet.co.uk/excel/Cuchet%20and%20co%20Wine%20List.xlsx"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "static"
+
+  - id: "private-cellar"
+    name: "Private Cellar"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.privatecellar.co.uk/"
+    downloads:
+      - url: "https://www.privatecellar.co.uk/downloads/E-List%20Private%20Cellar.xlsm"
+        format: "xlsm"
+        preferred: true
+        label: "Excel Macro list"
+      - url: "https://www.privatecellar.co.uk/downloads/E-List%20Private%20Cellar.pdf"
+        format: "pdf"
+        preferred: false
+    url_pattern: "static"
+
+  - id: "trinkreif"
+    name: "Trinkreif"
+    country: "AT"
+    tier: 1
+    enabled: true
+    discovery_url: "https://trinkreif.at/"
+    downloads:
+      - url: "https://trinkreif.at/data/uploads/{YYYY}/{MM}/trinkreif-Gesamtpreisliste-{DD}-{MM}-{YYYY}.xlsx"
+        format: "xlsx"
+        preferred: true
+        label: "Date-stamped Excel list"
+    url_pattern: "dated"
+    date_pattern: "{YYYY}/{MM}/trinkreif-Gesamtpreisliste-{DD}-{MM}-{YYYY}.xlsx"
+    notes: "URL contains current date; tries today then walks back up to 7 days"
+
+  - id: "south-wine-co"
+    name: "South Wine & Co"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://southwineandco.com/"
+    downloads:
+      - url: "https://southwineandco.com/media/files/tarif_global.xlsx"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "static"
+
+  - id: "de-vinis-illustribus"
+    name: "De Vinis Illustribus"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.devinis.fr/"
+    downloads:
+      - url: "https://devinis.fr/documents/catalogue/devinis_wine_list.pdf"
+        format: "pdf"
+        preferred: true
+    url_pattern: "static"
+    notes: "PDF only merchant"
+
+  - id: "denis-perret"
+    name: "Denis Perret"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.denisperret.fr/"
+    downloads:
+      - url: "https://www.denisperret.fr/en/index.php?controller=attachment&id_attachment=3760"
+        format: "pdf"
+        preferred: true
+    url_pattern: "dynamic_php"
+    notes: "PDF only"
+
+  - id: "maison-jude"
+    name: "Maison Jude"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://maisonjude.com/"
+    downloads:
+      - url: "https://maisonjude.com/wp-content/uploads/{YYYY}/{MM}/MAISON-JUDE-STOCK-EXC.-VAT-XLS.xlsx"
+        format: "xlsx"
+        preferred: true
+        label: "Ex-VAT stock list"
+    url_pattern: "dated"
+
+  - id: "millesimes"
+    name: "Millesimes"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.millesimes.com/"
+    downloads:
+      - url: "https://millesimes.com/tarif/pdf-ht.php"
+        format: "pdf"
+        preferred: true
+    url_pattern: "dynamic_php"
+    notes: "PDF only"
+
+  - id: "la-cave-de-lill"
+    name: "La Cave de l'ILL"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.lacavedelill.fr/"
+    downloads:
+      - url: "https://lacavedelill.fr/lacavedelill.xlsx"
+        format: "xlsx"
+        preferred: true
+      - url: "https://lacavedelill.fr/lacavedelill.pdf"
+        format: "pdf"
+        preferred: false
+    url_pattern: "static"
+
+  - id: "sodivin"
+    name: "SoDivin"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.sodivin.com/"
+    downloads:
+      - url: "https://sodivin.com/download/SoDivin_Tarif%20EN_Vintage.xlsx"
+        format: "xlsx"
+        preferred: true
+        label: "By vintage"
+      - url: "https://sodivin.com/download/SoDivin_Tarif%20EN_Chateau.xlsx"
+        format: "xlsx"
+        preferred: false
+        label: "By chateau"
+    url_pattern: "static"
+
+  - id: "winemania"
+    name: "WineMania"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.winemania.com/"
+    downloads:
+      - url: "https://winemania.com/tarifs/tarifs.xls"
+        format: "xls"
+        preferred: true
+      - url: "https://winemania.com/tarifs/tarifs.pdf"
+        format: "pdf"
+        preferred: false
+    url_pattern: "static"
+
+  - id: "chateau-estate"
+    name: "Chateau & Estate"
+    country: "DE"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.chateau-estate.de/"
+    downloads:
+      - url: "https://chateau-estate.de/prices/price.xls"
+        format: "xls"
+        preferred: true
+    url_pattern: "static"
+
+  - id: "vintage-grand-cru"
+    name: "Vintage Grand Cru"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.vintagegrandcru.com/"
+    downloads:
+      - url: "https://vintagegrandcru.com/pricelist.xlsx"
+        format: "xlsx"
+        preferred: true
+      - url: "https://vintagegrandcru.com/pricelist.pdf"
+        format: "pdf"
+        preferred: false
+    url_pattern: "static"
+
+  # ─── ARCHETYPE 3: Google Drive / Google Sheets ───────────────────────────
+  - id: "turville-valley-wines"
+    name: "Turville Valley Wines"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.turvillevalleywines.com/"
+    downloads:
+      - url: "https://drive.google.com/uc?export=download&id=1Cj6l6Rs4dKCKxcQGxI2hPViWDUYP6N9y"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "google_drive"
+    google_drive_id: "1Cj6l6Rs4dKCKxcQGxI2hPViWDUYP6N9y"
+
+  - id: "cave-de-chaz"
+    name: "Cave de Chaz"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://cavechaz.com/"
+    downloads:
+      - url: "https://docs.google.com/spreadsheets/d/1kkDx3hJCjucG01FnvyzGXjRXbi60T6DlbEWJKSuML-E/export?format=csv"
+        format: "csv"
+        preferred: true
+    url_pattern: "google_sheets"
+    google_sheet_id: "1kkDx3hJCjucG01FnvyzGXjRXbi60T6DlbEWJKSuML-E"
+
+  - id: "burgundy-cave"
+    name: "Burgundy Cave"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://burgundycave.com/"
+    downloads:
+      - url: "https://docs.google.com/spreadsheets/d/13gBLhRdhHQTA1GQ5SZGQZnk_eqUizkqm/export?format=xlsx"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "google_sheets"
+    google_sheet_id: "13gBLhRdhHQTA1GQ5SZGQZnk_eqUizkqm"
+
+  # ─── ARCHETYPE 4: Cloud-Hosted Static Exports ────────────────────────────
+  - id: "goedhuis-co"
+    name: "Goedhuis & Co"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.goedhuis.com/"
+    downloads:
+      - url: "https://dailystockfunction.blob.core.windows.net/fine-wine-list/GWL_FINE_WINE_LIST.xlsx"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "static"
+
+  - id: "ganpei-vintners"
+    name: "Ganpei Vintners"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.ganpeivintners.com/"
+    downloads:
+      - url: "https://cdn.shopify.com/s/files/1/0000/0000/files/GV_Catalog_{YYYY}{MM}{DD}.xlsx"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "dated"
+    notes: "Date-stamped filename in YYYYMMDD format"
+
+  # ─── ARCHETYPE 5: REST-Style Download Endpoints ──────────────────────────
+  - id: "orvinum-ag"
+    name: "Orvinum AG"
+    country: "DE"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.orvinum.com/"
+    downloads:
+      - url: "https://wine-rarities.auex.de/GetGerstlPDF.aspx?land=true&format=xlsx"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "rest_endpoint"
+
+  - id: "hong-kong-wine-vault"
+    name: "Hong Kong Wine Vault"
+    country: "HK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.winevault.com.hk/"
+    downloads:
+      - url: "https://winevault.com.hk/site/WineVault_Wine_List.xls"
+        format: "xls"
+        preferred: true
+    url_pattern: "static"
+
+  - id: "cave-bb"
+    name: "Cave BB"
+    country: "CH"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.cavebb.ch/"
+    downloads:
+      - url: "https://cavebb.ch/en/ExportPreisliste/Excel"
+        format: "xlsx"
+        preferred: true
+        label: "Excel price list"
+    url_pattern: "rest_endpoint"
+
+  - id: "lucullus"
+    name: "Lucullus"
+    country: "CH"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.lucullus.ch/"
+    downloads:
+      - url: "https://lucullus.ch/product-price-list/xls"
+        format: "xls"
+        preferred: true
+    url_pattern: "rest_endpoint"
+
+  - id: "santa-rosa-fine-wine"
+    name: "Santa Rosa Fine Wine"
+    country: "US"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.santarosafinewine.com/"
+    downloads:
+      - url: "https://santarosafinewine.com/prodfeed.php"
+        format: "csv"
+        preferred: true
+    url_pattern: "dynamic_php"
+
+  # ─── EDGE CASES: Hardcoded Direct URLs ───────────────────────────────────
+  - id: "in-vino-veritas"
+    name: "In Vino Veritas Ltd"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.invinoveritas.co.uk/"
+    downloads:
+      - url: "https://www.invinoveritas.co.uk/download/wine_list.xlsx"
+        format: "xlsx"
+        preferred: true
+        label: "HARDCODED - verify URL on next URL audit"
+    url_pattern: "static"
+    notes: "URL originally behind dated .htm page - manually researched direct URL"
+
+  - id: "albany-vintners"
+    name: "Albany Vintners"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.albanyvintners.co.uk/"
+    downloads:
+      - url: "https://www.albanyvintners.co.uk/downloads/price_list.xlsx"
+        format: "xlsx"
+        preferred: true
+        label: "HARDCODED - verify URL on next URL audit"
+    url_pattern: "static"
+    notes: "JS-rendered links - direct URL manually researched"
+
+  - id: "grw-wine-collection"
+    name: "GRW Wine Collection"
+    country: "UK"
+    tier: 1
+    enabled: false
+    discovery_url: "https://www.grwwine.com/pages/di"
+    downloads:
+      - url: "https://www.grwwine.com/pages/di"
+        format: "xlsx"
+        preferred: true
+        label: "PLACEHOLDER - needs URL research"
+    url_pattern: "static"
+    notes: "Shopify page - direct download URL not yet confirmed; disabled pending verification"
+
+  - id: "great-ocean-industrial"
+    name: "Great Ocean Industrial"
+    country: "AU"
+    tier: 1
+    enabled: false
+    discovery_url: "https://www.greatocean.com.au/pages/our-full-wine-list"
+    downloads:
+      - url: "https://www.greatocean.com.au/pages/our-full-wine-list"
+        format: "xlsx"
+        preferred: true
+        label: "PLACEHOLDER - needs URL research"
+    url_pattern: "static"
+    notes: "Shopify page - direct download URL not yet confirmed; disabled pending verification"
+
+  - id: "1870-vins-et-conseils"
+    name: "1870 Vins et Conseils"
+    country: "FR"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.1870.fr/"
+    downloads:
+      - url: "https://www.1870.fr/docs/liste_tarif.pdf"
+        format: "pdf"
+        preferred: true
+        label: "HARDCODED - verify URL on next audit"
+    url_pattern: "static"
+    notes: "PDF links in header/footer nav - manually researched"
