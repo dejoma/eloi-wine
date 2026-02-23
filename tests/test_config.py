@@ -38,3 +38,9 @@ def test_load_config_invalid_yaml_raises(tmp_path):
     bad.write_text("merchants: [invalid: yaml: content")
     with pytest.raises(ConfigError):
         load_config(bad)
+
+def test_load_config_merchants_not_list_raises(tmp_path):
+    bad = tmp_path / "bad.yaml"
+    bad.write_text("merchants: not-a-list")
+    with pytest.raises(ConfigError):
+        load_config(bad)

@@ -1,4 +1,5 @@
 # corkscrew/config.py
+"""YAML config loader: parses merchants.yaml into validated MerchantConfig objects."""
 from pathlib import Path
 from typing import Optional
 import yaml
@@ -24,8 +25,8 @@ def load_config(
     except yaml.YAMLError as e:
         raise ConfigError(f"Invalid YAML in {path}: {e}")
 
-    if not isinstance(raw, dict) or "merchants" not in raw:
-        raise ConfigError(f"Config missing 'merchants' key: {path}")
+    if not isinstance(raw, dict) or "merchants" not in raw or not isinstance(raw["merchants"], list):
+        raise ConfigError(f"Config missing or invalid 'merchants' list: {path}")
 
     merchants = []
     for item in raw["merchants"]:
