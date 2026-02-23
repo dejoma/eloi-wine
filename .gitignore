@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+.venv/
+data/raw/*
+data/normalized/*
+data/master/*
+data/state.json
+!data/raw/.gitkeep
+!data/normalized/.gitkeep
+!data/master/.gitkeep

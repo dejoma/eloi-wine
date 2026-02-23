@@ -1,0 +1,1 @@
+# storage.py — stub, filled in Task 4
