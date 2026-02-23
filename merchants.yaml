@@ -22,12 +22,12 @@ merchants:
     enabled: true
     discovery_url: "https://sterlingfw.hub.wine/"
     downloads:
-      - url: "https://extranet.hub.wine/xlsx/sterlingfw"
-        format: "xlsx"
+      - url: "https://sterlingfw.hub.wine/shop-wine-list.aspx?dl=true"
+        format: "csv"
         preferred: true
-        label: "hub.wine Excel export"
-    url_pattern: "hub_wine"
-    hub_wine_slug: "sterlingfw"
+        label: "Direct CSV download (confirmed 2026-02-23)"
+    url_pattern: "static"
+    notes: "Legacy hub.wine integration at sterlingfw subdomain; returns CSV not XLSX"
 
   - id: "decorum-vintners"
     name: "Decorum Vintners"
@@ -55,18 +55,47 @@ merchants:
     url_pattern: "hub_wine"
     hub_wine_slug: "falconvintners"
 
+  - id: "four-walls-wine"
+    name: "Four Walls Wine Co"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.fourwallswine.co.uk/"
+    downloads:
+      - url: "https://extranet.hub.wine/xlsx/fourwallswine"
+        format: "xlsx"
+        preferred: true
+        label: "hub.wine Excel export (confirmed 2026-02-23)"
+    url_pattern: "hub_wine"
+    hub_wine_slug: "fourwallswine"
+
+  - id: "hand-picked-burgundy"
+    name: "Hand Picked Burgundy"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.hpb-wines.com/"
+    downloads:
+      - url: "https://extranet.hub.wine/xlsx/hpb"
+        format: "xlsx"
+        preferred: true
+        label: "hub.wine Excel export (confirmed 2026-02-23)"
+    url_pattern: "hub_wine"
+    hub_wine_slug: "hpb"
+
   - id: "grand-vin-wm"
     name: "Grand Vin WM"
     country: "UK"
     tier: 1
     enabled: true
-    discovery_url: "https://www.grandvinwinemerchants.com/"
+    discovery_url: "https://www.grandvinwinemerchants.co.uk/"
     downloads:
-      - url: "https://extranet.hub.wine/xlsx/grandvinwinemerchants"
-        format: "xlsx"
+      - url: "https://www.grandvinwinemerchants.co.uk/wine/download"
+        format: "xls"
         preferred: true
-    url_pattern: "hub_wine"
-    hub_wine_slug: "grandvinwinemerchants"
+        label: "Direct download (confirmed 2026-02-23)"
+    url_pattern: "static"
+    notes: "URL is stable; server responds with Content-Disposition filename containing today's date (GVWM Product List YYYY-MM-DD.xls)"
 
   # ─── ARCHETYPE 2: Static File Paths ──────────────────────────────────────
   - id: "farr-vintners"
@@ -323,7 +352,7 @@ merchants:
 
   - id: "burgundy-cave"
     name: "Burgundy Cave"
-    country: "FR"
+    country: "HK"
     tier: 1
     enabled: true
     discovery_url: "https://burgundycave.com/"
@@ -334,6 +363,21 @@ merchants:
     url_pattern: "google_sheets"
     google_sheet_id: "13gBLhRdhHQTA1GQ5SZGQZnk_eqUizkqm"
     notes: "Google Sheets XLSX export; uses format-based XLSXNormalizer dispatch (no column_map configured yet)"
+
+  - id: "cote-dor-fine-wines"
+    name: "Cote d'Or Fine Wines"
+    country: "HK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.cotedorfinewines.com/"
+    downloads:
+      - url: "https://drive.google.com/uc?export=download&id=1AsUfoClPiNsIyEX9ws0rOxBTwpf8tvkv"
+        format: "xlsx"
+        preferred: true
+        label: "Google Drive XLSX (Drive ID confirmed 2026-02-23)"
+    url_pattern: "google_drive"
+    google_drive_id: "1AsUfoClPiNsIyEX9ws0rOxBTwpf8tvkv"
+    notes: "Drive file ID confirmed from live cotedorfinewines.com; PDF also available at Drive ID 18UUWIaE_Z7vCwFqlFHfLYrmbOwhoJakM"
 
   # ─── ARCHETYPE 4: Cloud-Hosted Static Exports ────────────────────────────
   - id: "goedhuis-co"
@@ -370,9 +414,10 @@ merchants:
     discovery_url: "https://www.orvinum.com/"
     downloads:
       - url: "https://wine-rarities.auex.de/GetGerstlPDF.aspx?land=true&format=xlsx"
-        format: "xlsx"
+        format: "pdf"
         preferred: true
     url_pattern: "rest_endpoint"
+    notes: "Despite format=xlsx in URL, server always returns PDF content-type (confirmed 2026-02-23)"
 
   - id: "hong-kong-wine-vault"
     name: "Hong Kong Wine Vault"
@@ -454,42 +499,42 @@ merchants:
 
   - id: "grw-wine-collection"
     name: "GRW Wine Collection"
-    country: "UK"
+    country: "US"
     tier: 1
-    enabled: false
+    enabled: true
     discovery_url: "https://www.grwwine.com/pages/di"
     downloads:
-      - url: "https://www.grwwine.com/pages/di"
-        format: "xlsx"
+      - url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRmTYg2kFi3zHhtjEaV60xuQyiu6rfNXBHwiNcEtbLKaFv9Y57R6hqj96PanccSx2_OsdDD3F0397sO/pub?gid=0&single=true&output=csv"
+        format: "csv"
         preferred: true
-        label: "PLACEHOLDER - needs URL research"
-    url_pattern: "static"
-    notes: "Shopify page - direct download URL not yet confirmed; disabled pending verification"
+        label: "Google Sheets CSV export (confirmed 2026-02-23)"
+    url_pattern: "google_sheets"
+    google_sheet_id: "2PACX-1vRmTYg2kFi3zHhtjEaV60xuQyiu6rfNXBHwiNcEtbLKaFv9Y57R6hqj96PanccSx2_OsdDD3F0397sO"
+    notes: "Shopify-based US merchant; published Google Sheet accessible from grwwine.com/pages/di"
 
   - id: "great-ocean-industrial"
     name: "Great Ocean Industrial"
     country: "AU"
     tier: 1
     enabled: false
-    discovery_url: "https://www.greatocean.com.au/pages/our-full-wine-list"
+    discovery_url: "https://www.greatocean.com.au/"
     downloads:
       - url: "https://www.greatocean.com.au/pages/our-full-wine-list"
         format: "xlsx"
         preferred: true
-        label: "PLACEHOLDER - needs URL research"
+        label: "PLACEHOLDER - URL unconfirmed"
     url_pattern: "static"
-    notes: "Shopify page - direct download URL not yet confirmed; disabled pending verification"
+    notes: "BROKEN: greatocean.com.au is an unrelated art/ocean magazine as of 2026-02-23; wine company URL unknown; disabled pending correct domain research"
 
   - id: "1870-vins-et-conseils"
     name: "1870 Vins et Conseils"
     country: "FR"
     tier: 1
-    enabled: true
+    enabled: false
     discovery_url: "https://www.1870.fr/"
     downloads:
       - url: "https://www.1870.fr/docs/liste_tarif.pdf"
         format: "pdf"
         preferred: true
-        label: "HARDCODED - verify URL on next audit"
     url_pattern: "static"
-    notes: "PDF links in header/footer nav - manually researched"
+    notes: "DEFUNCT: www.1870.fr DNS does not resolve as of 2026-02-23; last Wayback Machine snapshot April 2023; disabled"
