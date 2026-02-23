@@ -1,5 +1,4 @@
 # tests/test_url_resolver.py
-import pytest
 from datetime import date
 from corkscrew.url_resolver import resolve_url, generate_dated_candidates
 

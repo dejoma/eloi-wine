@@ -28,7 +28,7 @@ def resolve_url(
     if pattern == "dated":
         return generate_dated_candidates(url, reference_date)
     if pattern == "google_sheets":
-        if "export?" in url:
+        if "/export?" in url:
             return [url]
         return [f"{url.rstrip('/')}/export?format=csv"]
     if pattern == "google_drive":
@@ -45,4 +45,4 @@ def _extract_drive_id(url: str) -> str:
         return url.split("/file/d/")[1].split("/")[0]
     if "id=" in url:
         return url.split("id=")[-1].split("&")[0]
-    return url
+    raise ValueError(f"Cannot extract Google Drive ID from URL: {url}")
