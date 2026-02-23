@@ -37,7 +37,7 @@ class Downloader:
         for url in candidates:
             for attempt, delay in enumerate(RETRY_DELAYS + [None], 1):
                 try:
-                    result = await self._fetch(merchant, url, dl.format)
+                    result = await self._fetch(merchant, url, dl.format, ref_date)
                     if result.success:
                         return result
                     if result.status_code == 404 and len(candidates) > 1:
@@ -61,7 +61,7 @@ class Downloader:
             error=last_error or "All attempts failed",
         )
 
-    async def _fetch(self, merchant: MerchantConfig, url: str, fmt: str) -> DownloadResult:
+    async def _fetch(self, merchant: MerchantConfig, url: str, fmt: str, ref_date: Optional[date] = None) -> DownloadResult:
         async with httpx.AsyncClient(
             headers={"User-Agent": BROWSER_UA},
             follow_redirects=True,
@@ -97,8 +97,8 @@ class Downloader:
         if "." not in fname:
             fname = f"{fname}.{fmt}"
 
-        today = date.today().isoformat()
-        out_dir = self.output_root / merchant.id / today
+        run_date = (ref_date or date.today()).isoformat()
+        out_dir = self.output_root / merchant.id / run_date
         out_dir.mkdir(parents=True, exist_ok=True)
         filepath = out_dir / fname
         filepath.write_bytes(content)
