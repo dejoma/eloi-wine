@@ -1,4 +1,10 @@
 merchants:
+  # Field reference:
+  #   discovery_url  - The merchant's WEBSITE PAGE where the download link lives.
+  #                    If a download URL breaks (Google Sheets re-published, dated slug
+  #                    changes, Drive file replaced), visit this URL to find the new one.
+  #   downloads[].url - The direct file URL used by the downloader.
+  #
   # ─── ARCHETYPE 1: hub.wine Extranet ─────────────────────────────────────
   - id: "bibo-wine"
     name: "BiBo Wine"
@@ -133,7 +139,7 @@ merchants:
     country: "UK"
     tier: 1
     enabled: true
-    discovery_url: "https://www.bibendum-wine.co.uk/"
+    discovery_url: "https://www.bibendum-wine.co.uk/fine-wine-list/"
     downloads:
       - url: "https://bibendum-wine.co.uk/media/yfkchr4d/01022026-fine-wine-list.xlsx"
         format: "xlsx"
@@ -174,7 +180,7 @@ merchants:
     country: "AT"
     tier: 1
     enabled: true
-    discovery_url: "https://trinkreif.at/"
+    discovery_url: "https://trinkreif.at/news-ganz-vorne/preisliste/"
     downloads:
       - url: "https://trinkreif.at/data/uploads/{YYYY}/{MM}/trinkreif-Gesamtpreisliste-{DD}-{MM}-{YYYY}.xlsx"
         format: "xlsx"
@@ -227,7 +233,7 @@ merchants:
     country: "FR"
     tier: 1
     enabled: true
-    discovery_url: "https://maisonjude.com/"
+    discovery_url: "https://maisonjude.com/notre-stock/"
     downloads:
       - url: "https://maisonjude.com/wp-content/uploads/{YYYY}/{MM}/MAISON-JUDE-STOCK-EXC.-VAT-XLS.xlsx"
         format: "xlsx"
@@ -328,7 +334,7 @@ merchants:
     country: "UK"
     tier: 1
     enabled: true
-    discovery_url: "https://www.turvillevalleywines.com/"
+    discovery_url: "https://www.turvillevalleywines.com/en/stocklist"
     downloads:
       - url: "https://drive.google.com/uc?export=download&id=1Cj6l6Rs4dKCKxcQGxI2hPViWDUYP6N9y"
         format: "xlsx"
@@ -369,7 +375,7 @@ merchants:
     country: "HK"
     tier: 1
     enabled: true
-    discovery_url: "https://www.cotedorfinewines.com/"
+    discovery_url: "https://www.cotedorfinewines.com/wine-list"
     downloads:
       - url: "https://drive.google.com/uc?export=download&id=1AsUfoClPiNsIyEX9ws0rOxBTwpf8tvkv"
         format: "xlsx"
@@ -397,7 +403,7 @@ merchants:
     country: "UK"
     tier: 1
     enabled: true
-    discovery_url: "https://www.ganpeivintners.com/"
+    discovery_url: "https://www.ganpeivintners.com/collections/all"
     downloads:
       - url: "https://cdn.shopify.com/s/files/1/0000/0000/files/GV_Catalog_{YYYY}{MM}{DD}.xlsx"
         format: "xlsx"
