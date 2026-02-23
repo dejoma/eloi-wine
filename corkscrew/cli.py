@@ -5,22 +5,22 @@ import sys
 from datetime import date, datetime, timezone
 from pathlib import Path
 import click
+import pandas as pd
 from rich.console import Console
 from rich.table import Table
 from corkscrew.config import load_config, ConfigError
 from corkscrew.downloader import Downloader
 from corkscrew.normalizer import NormalizerRegistry, NormalizationError
 from corkscrew.storage import StorageManager
-import pandas as pd
 
 console = Console()
 DATA_ROOT = Path("data")
 STATE_FILE = DATA_ROOT / "state.json"
 DEFAULT_CONFIG = Path("merchants.yaml")
 
-
-def get_config_path() -> Path:
-    return DEFAULT_CONFIG
+# A merchant is considered stale when its last N consecutive runs produced no
+# changed data; this threshold determines how many unchanged runs trigger STALE.
+STALE_RUN_THRESHOLD = 5
 
 
 @click.group()
@@ -36,7 +36,7 @@ def cli():
 @click.option("--config", default=None, help="Path to merchants.yaml")
 def run(merchant, tier, dry_run, config):
     """Download and normalize wine inventory from merchants."""
-    config_path = Path(config) if config else get_config_path()
+    config_path = Path(config) if config else DEFAULT_CONFIG
     try:
         merchants = load_config(config_path, enabled_only=True, tier=tier, merchant_id=merchant)
     except ConfigError as e:
@@ -58,12 +58,12 @@ def run(merchant, tier, dry_run, config):
     downloader = Downloader(output_root=DATA_ROOT / "raw")
     registry = NormalizerRegistry()
 
-    console.print(f"[bold]Starting run for {len(merchants)} merchants (10 concurrent)[/bold]")
+    console.print(f"[bold]Starting run for {len(merchants)} merchants[/bold]")
 
     results = asyncio.run(downloader.download_all(merchants))
 
     failed = []
-    normalized_count = 0
+    norm_failed = []
     total_wines = 0
 
     for result, merchant_cfg in zip(results, merchants):
@@ -97,21 +97,21 @@ def run(merchant, tier, dry_run, config):
                     pd.DataFrame([r.to_row() for r in records]).to_csv(out_path, index=False)
                     console.print(f"    [dim]→ {len(records)} wines normalized[/dim]")
                     total_wines += len(records)
-                normalized_count += 1
             except NormalizationError as e:
                 console.print(f"    [yellow]⚠ Normalization failed:[/yellow] {e}")
+                norm_failed.append(merchant_cfg.id)
 
     console.print(f"\n[bold]Run complete:[/bold] {len(merchants)-len(failed)}/{len(merchants)} succeeded, "
-                  f"{len(failed)} failed, {total_wines} wines normalized")
+                  f"{len(failed)} failed, {len(norm_failed)} norm failures, {total_wines} wines normalized")
 
-    sys.exit(1 if failed else 0)
+    sys.exit(1 if failed or norm_failed else 0)
 
 
 @cli.command()
 @click.option("--config", default=None, help="Path to merchants.yaml")
 def status(config):
     """Show last run status for all merchants."""
-    config_path = Path(config) if config else get_config_path()
+    config_path = Path(config) if config else DEFAULT_CONFIG
     try:
         merchants = load_config(config_path)
     except ConfigError as e:
@@ -148,7 +148,7 @@ def status(config):
             elif failures > 0:
                 status_str = "[red]FAILED[/red]"
                 failed_count += 1
-            elif not state.changed and len(state.history) > 5:
+            elif not state.changed and len(state.history) > STALE_RUN_THRESHOLD:
                 status_str = "[yellow]STALE[/yellow]"
                 stale += 1
             else:
@@ -167,7 +167,7 @@ def status(config):
 @click.option("--config", default=None)
 def list_merchants(config):
     """List all configured merchants."""
-    config_path = Path(config) if config else get_config_path()
+    config_path = Path(config) if config else DEFAULT_CONFIG
     try:
         merchants = load_config(config_path)
     except ConfigError as e:
