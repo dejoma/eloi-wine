@@ -31,7 +31,7 @@ def cli():
 
 @cli.command()
 @click.option("--merchant", default=None, help="Run a single merchant by ID")
-@click.option("--tier", default=1, type=int, show_default=True, help="Run merchants of this tier")
+@click.option("--tier", default=None, type=int, help="Run merchants of this tier (default: all tiers)")
 @click.option("--dry-run", is_flag=True, help="Show what would be downloaded without downloading")
 @click.option("--config", default=None, help="Path to merchants.yaml")
 def run(merchant, tier, dry_run, config):
@@ -146,7 +146,7 @@ def status(config):
                 status_str = "[yellow]⚠ WARN[/yellow]"
                 failed_count += 1
             elif failures > 0:
-                status_str = f"[red]FAILED ({failures})[/red]"
+                status_str = "[red]FAILED[/red]"
                 failed_count += 1
             elif not state.changed and len(state.history) > 5:
                 status_str = "[yellow]STALE[/yellow]"
@@ -221,6 +221,8 @@ def merge(output):
 def _relative_time(iso_str: str) -> str:
     try:
         dt = datetime.fromisoformat(iso_str)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
         delta = datetime.now(timezone.utc) - dt
         if delta.total_seconds() < 3600:
             return f"{int(delta.total_seconds() // 60)}m ago"
