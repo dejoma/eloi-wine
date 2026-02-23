@@ -1,10 +1,13 @@
 # corkscrew/storage.py
 import hashlib
 import json
+import logging
+import shutil
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
 from corkscrew.models import MerchantState
+
+logger = logging.getLogger(__name__)
 
 HISTORY_LIMIT = 30
 
@@ -23,9 +26,19 @@ class StorageManager:
         self._data: dict = self._load()
 
     def _load(self) -> dict:
-        if self.state_path.exists():
+        if not self.state_path.exists():
+            return {}
+        try:
             return json.loads(self.state_path.read_text())
-        return {}
+        except json.JSONDecodeError as e:
+            backup = self.state_path.with_suffix(".json.bak")
+            shutil.copy2(self.state_path, backup)
+            logger.warning(
+                "state.json is corrupted (%s). Starting with empty state. "
+                "Corrupted file backed up to %s",
+                e, backup,
+            )
+            return {}
 
     def _save(self):
         self.state_path.parent.mkdir(parents=True, exist_ok=True)
@@ -41,7 +54,7 @@ class StorageManager:
     def record_success(self, merchant_id: str, hash_val: str, filepath: str, changed: bool):
         now = datetime.now(timezone.utc).isoformat()
         existing = self._data.get(merchant_id, {})
-        history = existing.get("history", [])
+        history = list(existing.get("history", []))
         history.append({"date": now[:10], "hash": hash_val, "status": "success", "changed": changed})
         if len(history) > HISTORY_LIMIT:
             history = history[-HISTORY_LIMIT:]
@@ -59,7 +72,7 @@ class StorageManager:
     def record_failure(self, merchant_id: str, error: str):
         now = datetime.now(timezone.utc).isoformat()
         existing = self._data.get(merchant_id, {})
-        history = existing.get("history", [])
+        history = list(existing.get("history", []))
         history.append({"date": now[:10], "hash": None, "status": "failed", "changed": False, "error": error})
         if len(history) > HISTORY_LIMIT:
             history = history[-HISTORY_LIMIT:]
