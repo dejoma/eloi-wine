@@ -82,6 +82,7 @@ async def test_download_rejects_tiny_file(tmp_path):
     assert not result.success
     assert result.error is not None
     assert "too small" in result.error.lower()
+    # One GET only: size-check failure on a 200 must not trigger the retry loop.
     assert mock_client.get.call_count == 1
 
 
