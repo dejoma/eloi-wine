@@ -31,7 +31,7 @@ def test_csv_normalizer_with_column_map():
     assert len(records) == 3
     assert records[0].wine_name == "Pétrus"
     assert records[0].vintage == "2019"
-    assert records[0].price == "4500.0"
+    assert records[0].price == "4500"
     assert records[0].merchant_id == "test"
     assert records[0].download_date == "2026-02-23"
 

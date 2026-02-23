@@ -2,6 +2,7 @@
 """Normalizer registry and per-format base normalizers for wine inventory data."""
 from __future__ import annotations
 import logging
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 import chardet
 import pandas as pd
@@ -31,11 +32,13 @@ class BaseNormalizer:
             if val is None or (isinstance(val, float) and pd.isna(val)):
                 val = ""
             str_val = str(val).strip()
-            # Normalise decimal numeric strings: "4500.00" -> "4500.0", leave "2019" as "2019"
+            # Normalise decimal numeric strings to strip trailing zeros from prices like
+            # "4500.00" -> "4500". Using Decimal.normalize() avoids float precision loss
+            # and scientific notation issues (e.g. float("0.000001") -> "1e-06").
             if "." in str_val:
                 try:
-                    str_val = str(float(str_val))
-                except (ValueError, TypeError):
+                    str_val = format(Decimal(str_val).normalize(), "f")
+                except InvalidOperation:
                     pass
             kwargs[dest_field] = str_val
         return WineRecord(**kwargs)
@@ -75,10 +78,17 @@ class JSONNormalizer(BaseNormalizer):
         except Exception as e:
             raise NormalizationError(f"JSON read failed: {e}")
         if isinstance(data, dict):
-            for v in data.values():
-                if isinstance(v, list):
-                    data = v
-                    break
+            list_keys = [k for k, v in data.items() if isinstance(v, list)]
+            if not list_keys:
+                raise NormalizationError("JSON dict contains no list-valued keys")
+            if len(list_keys) > 1:
+                logger.warning(
+                    "JSONNormalizer: multiple list keys found %s, using first: %r",
+                    list_keys, list_keys[0]
+                )
+            else:
+                logger.debug("JSONNormalizer: using key %r", list_keys[0])
+            data = data[list_keys[0]]
         if not isinstance(data, list):
             raise NormalizationError("JSON does not contain a list of records")
         column_map = merchant.column_map or {}
