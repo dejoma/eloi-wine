@@ -1,0 +1,40 @@
+# tests/fixtures/merchants_test.yaml
+merchants:
+  - id: "farr-vintners"
+    name: "Farr Vintners"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.farrvintners.com/downloads/"
+    downloads:
+      - url: "https://www.farrvintners.com/winelist_csv.php?output=csv"
+        format: "csv"
+        preferred: true
+        label: "CSV full list"
+    url_pattern: "static"
+    notes: "Gold standard"
+
+  - id: "bibo-wine"
+    name: "BiBo Wine"
+    country: "UK"
+    tier: 1
+    enabled: true
+    discovery_url: "https://www.bibo-wine.co.uk/"
+    downloads:
+      - url: "https://extranet.hub.wine/xlsx/bibo"
+        format: "xlsx"
+        preferred: true
+    url_pattern: "hub_wine"
+    hub_wine_slug: "bibo"
+
+  - id: "disabled-merchant"
+    name: "Disabled"
+    country: "UK"
+    tier: 1
+    enabled: false
+    discovery_url: "https://example.com/"
+    downloads:
+      - url: "https://example.com/file.csv"
+        format: "csv"
+        preferred: true
+    url_pattern: "static"
