@@ -1,7 +1,7 @@
 # corkscrew/models.py
 from __future__ import annotations
 from typing import Optional, Literal
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, Field
 
 
 class DownloadConfig(BaseModel):
@@ -18,7 +18,7 @@ class MerchantConfig(BaseModel):
     tier: int
     enabled: bool
     discovery_url: str
-    downloads: list[DownloadConfig]
+    downloads: list[DownloadConfig] = Field(min_length=1)
     url_pattern: Literal["static", "dated", "google_sheets", "google_drive", "hub_wine", "rest_endpoint", "dynamic_php"]
     date_pattern: Optional[str] = None
     auth: Optional[str] = None
@@ -62,8 +62,8 @@ class WineRecord(BaseModel):
 
 class DownloadResult(BaseModel):
     merchant_id: str
-    filepath: Optional[str]
-    file_hash: Optional[str]
+    filepath: Optional[str] = None
+    file_hash: Optional[str] = None
     changed: bool
     status_code: int
     bytes_downloaded: int

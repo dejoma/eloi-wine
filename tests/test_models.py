@@ -53,3 +53,23 @@ def test_download_result_creation():
 def test_download_result_failure():
     dr = DownloadResult(merchant_id="test", filepath=None, file_hash=None, changed=False, status_code=503, bytes_downloaded=0, error="HTTP 503")
     assert dr.success is False
+
+def test_merchant_state_defaults():
+    state = MerchantState()
+    assert state.last_run is None
+    assert state.last_success is None
+    assert state.last_hash is None
+    assert state.last_file is None
+    assert state.changed is False
+    assert state.consecutive_failures == 0
+    assert state.history == []
+
+def test_merchant_config_requires_at_least_one_download():
+    from pydantic import ValidationError
+    with pytest.raises(ValidationError):
+        MerchantConfig(
+            id="test", name="Test", country="UK", tier=1, enabled=True,
+            discovery_url="https://example.com",
+            downloads=[],  # empty list should fail
+            url_pattern="static",
+        )
