@@ -82,6 +82,7 @@ async def test_download_rejects_tiny_file(tmp_path):
     assert not result.success
     assert result.error is not None
     assert "too small" in result.error.lower()
+    assert mock_client.get.call_count == 1
 
 
 @pytest.mark.asyncio
