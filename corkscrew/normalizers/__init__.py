@@ -12,7 +12,5 @@ MERCHANT_NORMALIZER_MAP = {
     "falcon-vintners": HubWineNormalizer,
     "grand-vin-wm": HubWineNormalizer,
     # Google Sheets merchants
-    "turville-valley-wines": GoogleSheetsNormalizer,
     "cave-de-chaz": GoogleSheetsNormalizer,
-    "burgundy-cave": GoogleSheetsNormalizer,
 }

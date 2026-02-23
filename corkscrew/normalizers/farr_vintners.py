@@ -1,3 +1,5 @@
+import copy
+
 from corkscrew.normalizer import CSVNormalizer
 
 class FarrVintnersNormalizer(CSVNormalizer):
@@ -20,7 +22,6 @@ class FarrVintnersNormalizer(CSVNormalizer):
     def normalize(self, filepath, merchant, download_date):
         # Use config column_map if provided, otherwise fall back to default
         if not merchant.column_map:
-            import copy
             patched = copy.copy(merchant)
             object.__setattr__(patched, "column_map", self.DEFAULT_COLUMN_MAP)
             return super().normalize(filepath, patched, download_date)

@@ -1,3 +1,5 @@
+import copy
+
 from corkscrew.normalizer import XLSXNormalizer
 
 class HubWineNormalizer(XLSXNormalizer):
@@ -16,7 +18,6 @@ class HubWineNormalizer(XLSXNormalizer):
 
     def normalize(self, filepath, merchant, download_date):
         if not merchant.column_map:
-            import copy
             patched = copy.copy(merchant)
             object.__setattr__(patched, "column_map", self.DEFAULT_COLUMN_MAP)
             return super().normalize(filepath, patched, download_date)

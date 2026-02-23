@@ -61,11 +61,42 @@ def test_google_sheets_normalizer_dispatched(tmp_path):
     csv_path = tmp_path / "sheets.csv"
     df.to_csv(csv_path, index=False)
 
-    merchant = make_merchant("turville-valley-wines", column_map={"Vin": "wine_name", "Millesime": "vintage"})
+    merchant = make_merchant("cave-de-chaz", column_map={"Vin": "wine_name", "Millesime": "vintage"})
     registry = NormalizerRegistry()
     records = registry.normalize(csv_path, merchant, download_date="2026-02-23")
     assert len(records) == 1
     assert records[0].wine_name == "Petrus"
+
+
+def test_farr_vintners_config_column_map_overrides_default(tmp_path):
+    """When column_map is set in config, it takes precedence over DEFAULT_COLUMN_MAP."""
+    # CSV with non-Farr column names (simulates a custom config override)
+    df = pd.DataFrame({"Nom": ["Petrus"], "Prix": ["4500"]})
+    csv_path = tmp_path / "farr_custom.csv"
+    df.to_csv(csv_path, index=False)
+
+    from corkscrew.normalizers.farr_vintners import FarrVintnersNormalizer
+    merchant = make_merchant("farr-vintners", column_map={"Nom": "wine_name", "Prix": "price"})
+    normalizer = FarrVintnersNormalizer()
+    records = normalizer.normalize(csv_path, merchant, download_date="2026-02-23")
+    assert len(records) == 1
+    assert records[0].wine_name == "Petrus"
+    assert records[0].price == "4500"
+
+
+def test_hub_wine_config_column_map_overrides_default(tmp_path):
+    """When column_map is set in config, it takes precedence over DEFAULT_COLUMN_MAP."""
+    df = pd.DataFrame({"Vin": ["Latour"], "Millesime": ["2015"]})
+    xlsx_path = tmp_path / "hub_custom.xlsx"
+    df.to_excel(xlsx_path, index=False)
+
+    from corkscrew.normalizers.hub_wine import HubWineNormalizer
+    merchant = make_merchant("bibo-wine", column_map={"Vin": "wine_name", "Millesime": "vintage"})
+    normalizer = HubWineNormalizer()
+    records = normalizer.normalize(xlsx_path, merchant, download_date="2026-02-23")
+    assert len(records) == 1
+    assert records[0].wine_name == "Latour"
+    assert records[0].vintage == "2015"
 
 
 def test_unknown_merchant_falls_back_to_format_dispatch(tmp_path):

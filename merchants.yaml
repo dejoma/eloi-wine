@@ -306,6 +306,7 @@ merchants:
         preferred: true
     url_pattern: "google_drive"
     google_drive_id: "1Cj6l6Rs4dKCKxcQGxI2hPViWDUYP6N9y"
+    notes: "Google Drive XLSX download; uses format-based XLSXNormalizer dispatch (no column_map configured yet)"
 
   - id: "cave-de-chaz"
     name: "Cave de Chaz"
@@ -332,6 +333,7 @@ merchants:
         preferred: true
     url_pattern: "google_sheets"
     google_sheet_id: "13gBLhRdhHQTA1GQ5SZGQZnk_eqUizkqm"
+    notes: "Google Sheets XLSX export; uses format-based XLSXNormalizer dispatch (no column_map configured yet)"
 
   # ─── ARCHETYPE 4: Cloud-Hosted Static Exports ────────────────────────────
   - id: "goedhuis-co"
