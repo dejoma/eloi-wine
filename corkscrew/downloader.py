@@ -11,7 +11,7 @@ from corkscrew.storage import compute_hash
 
 BROWSER_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
 MIN_FILE_SIZE = 100  # bytes
-RETRY_DELAYS = [1, 4, 16]
+RETRY_DELAYS = [1, 4, 16]  # 1 initial attempt + up to 3 retries = 4 total attempts per URL
 
 
 class Downloader:
@@ -44,6 +44,11 @@ class Downloader:
                         last_status = result.status_code
                         last_error = result.error
                         break  # try next dated candidate
+                    if result.status_code == 200:
+                        # Size or content failure on a 200 — retrying the same URL won't help
+                        last_status = result.status_code
+                        last_error = result.error
+                        break
                     last_status = result.status_code
                     last_error = result.error
                     if delay is not None:
