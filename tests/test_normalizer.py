@@ -3,7 +3,7 @@ import pytest
 import pandas as pd
 from pathlib import Path
 from datetime import date
-from corkscrew.normalizer import NormalizerRegistry, CSVNormalizer, XLSXNormalizer, PDFNormalizer, NormalizationError
+from corkscrew.normalizer import NormalizerRegistry, CSVNormalizer, XLSXNormalizer, PDFNormalizer, JSONNormalizer, NormalizationError
 from corkscrew.models import MerchantConfig, DownloadConfig, WineRecord
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -95,3 +95,41 @@ def test_registry_unknown_extension_raises(tmp_path):
     registry = NormalizerRegistry()
     with pytest.raises(NormalizationError):
         registry.normalize(unknown, merchant, download_date="2026-02-23")
+
+
+def test_json_normalizer_single_list_key(tmp_path, caplog):
+    import json, logging
+    data = {"wines": [{"Wine": "Petrus", "Price": "4500.00"}]}
+    p = tmp_path / "wines.json"
+    p.write_text(json.dumps(data))
+    merchant = make_merchant(column_map={"Wine": "wine_name", "Price": "price"})
+    normalizer = JSONNormalizer()
+    with caplog.at_level(logging.DEBUG, logger="corkscrew.normalizer"):
+        records = normalizer.normalize(p, merchant, download_date="2026-02-23")
+    assert len(records) == 1
+    assert records[0].price == "4500"
+    assert "using key" in caplog.text
+
+
+def test_json_normalizer_multiple_list_keys_warns(tmp_path, caplog):
+    import json, logging
+    data = {"wines": [{"Wine": "Petrus"}], "others": [{"Wine": "Other"}]}
+    p = tmp_path / "multi.json"
+    p.write_text(json.dumps(data))
+    merchant = make_merchant(column_map={"Wine": "wine_name"})
+    normalizer = JSONNormalizer()
+    with caplog.at_level(logging.WARNING, logger="corkscrew.normalizer"):
+        records = normalizer.normalize(p, merchant, download_date="2026-02-23")
+    assert len(records) == 1
+    assert "multiple list keys found" in caplog.text
+
+
+def test_json_normalizer_no_list_keys_raises(tmp_path):
+    import json
+    data = {"count": 3, "label": "test"}
+    p = tmp_path / "nolist.json"
+    p.write_text(json.dumps(data))
+    merchant = make_merchant(column_map={"Wine": "wine_name"})
+    normalizer = JSONNormalizer()
+    with pytest.raises(NormalizationError, match="no list-valued keys"):
+        normalizer.normalize(p, merchant, download_date="2026-02-23")
